@@ -1,0 +1,60 @@
+{% extends "layout.html" %} {% block content %}
+
+<div class="container d-flex justify-content-center align-items-center vh-100">
+  <div class="col-md-6">
+    <div class="card bg-dark text-light border-0 shadow-lg rounded-4">
+      <div
+        class="card-header text-white text-center py-4 rounded-top"
+        style="background: linear-gradient(45deg, #007bff, #00c6ff)"
+      >
+        <h2 class="fw-bold">
+          <i class="fa-solid fa-user-plus me-2"></i> Create an Account
+        </h2>
+      </div>
+      <div class="card-body p-5">
+        <form method="post" class="needs-validation">
+          {% csrf_token %} {% for field in form %}
+          <div class="mb-3">
+            <div>{{field.image}}</div>
+
+            <label class="form-label fw-semibold">{{ field.label }}</label>
+            <div class="input-group">
+              {% if field.name == "username" %}
+              <span class="input-group-text bg-secondary text-white border-0">
+                <i class="fa-solid fa-user"></i>
+              </span>
+              {% elif field.name == "email" %}
+              <span class="input-group-text bg-secondary text-white border-0">
+                <i class="fa-solid fa-envelope"></i>
+              </span>
+              {% elif field.name == "password1" or field.name == "password2" %}
+              <span class="input-group-text bg-secondary text-white border-0">
+                <i class="fa-solid fa-lock"></i>
+              </span>
+              {% endif %} {{ field }}
+            </div>
+          </div>
+          {% endfor %}
+
+          <div class="d-grid">
+            <button class="btn btn-info btn-lg shadow-sm" type="submit">
+              <i class="fa-solid fa-user-plus me-2"></i> Register
+            </button>
+          </div>
+        </form>
+
+        <div class="text-center mt-4">
+          <p class="fw-semibold">Already have an account?</p>
+          <a
+            href="{% url 'login' %}"
+            class="text-decoration-none fw-bold text-info"
+          >
+            <i class="fa-solid fa-sign-in-alt me-1"></i> Login here
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

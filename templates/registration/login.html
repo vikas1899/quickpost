@@ -1,0 +1,50 @@
+{% extends "layout.html" %} {% block content %}
+
+<div class="container d-flex justify-content-center align-items-center vh-100">
+  <div class="col-md-5">
+    <div class="card bg-dark text-light shadow-lg border-0 rounded-4">
+      <div class="card-body p-5">
+        <h2 class="text-center fw-bold mb-4 text-info">
+          <i class="fa-solid fa-user-lock me-2"></i> Login
+        </h2>
+
+        <form method="post" class="needs-validation">
+          {% csrf_token %} {% for field in form %}
+          <div class="mb-3">
+            <label class="form-label fw-semibold">{{ field.label }}</label>
+            <div class="input-group">
+              {% if field.name == "username" %}
+              <span class="input-group-text bg-secondary text-white border-0">
+                <i class="fa-solid fa-user"></i>
+              </span>
+              {% elif field.name == "password" %}
+              <span class="input-group-text bg-secondary text-white border-0">
+                <i class="fa-solid fa-lock"></i>
+              </span>
+              {% endif %} {{ field }}
+            </div>
+          </div>
+          {% endfor %}
+
+          <div class="d-grid">
+            <button class="btn btn-info btn-lg shadow-sm" type="submit">
+              <i class="fa-solid fa-sign-in-alt me-2"></i> Login
+            </button>
+          </div>
+        </form>
+
+        <p class="text-center mt-4">
+          Don't have an account?
+          <a
+            href="{% url 'register' %}"
+            class="text-decoration-none fw-bold text-info"
+          >
+            <i class="fa-solid fa-user-plus me-1"></i> Register here
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

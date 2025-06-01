@@ -1,0 +1,105 @@
+{% extends "layout.html" %} {% block title %} Search Results {% endblock %}
+{%block content %}
+
+
+  <h2 class="text-center text-white mt-4">
+    <i class="fas fa-search"></i> Search Results for "{{ query }}"
+  </h2>
+
+  <!-- TWEETS SECTION -->
+  {% if tweets %}
+  <div class="mt-5">
+    <h3 class="text-white text-center">
+      <i class="fas fa-comments"></i> Tweets
+    </h3>
+    <div class="row row-cols-1 row-cols-md-3 g-4 justify-content-center">
+      {% for tweet in tweets %}
+      <div class="col">
+        <div class="card shadow-lg border-0 rounded h-100">
+          {% if tweet.photo %}
+          <img
+            src="{{ tweet.photo.url }}"
+            class="card-img-top img-fluid"
+            style="height: 200px; object-fit: cover"
+            alt="Tweet Image"
+          />
+          {% endif %}
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title fw-bold text-primary">
+              {{ tweet.user.username }}
+            </h5>
+
+            <!-- Read More Feature -->
+            {% with tweet.text.split|length as word_count %}
+            <p class="card-text text-muted" id="tweet-preview-{{ tweet.id }}">
+              {% if word_count > 20 %} {{ tweet.text|truncatewords:20 }}...
+              <a
+                href="javascript:void(0);"
+                class="text-primary"
+                onclick="toggleReadMore('{{ tweet.id }}')"
+              >
+                Read More
+              </a>
+              {% else %} {{ tweet.text }} {% endif %}
+            </p>
+
+            <p
+              class="card-text text-muted d-none"
+              id="tweet-full-{{ tweet.id }}"
+            >
+              {{ tweet.text }}
+              <a
+                href="javascript:void(0);"
+                class="text-primary"
+                onclick="toggleReadLess('{{ tweet.id }}')"
+              >
+                Show Less
+              </a>
+            </p>
+            {% endwith %}
+
+            <div class="d-flex justify-content-between mt-auto">
+              {% if tweet.user == user %}
+              <a
+                href="{% url 'tweet_edit' tweet.id %}"
+                class="btn btn-outline-primary btn-sm"
+              >
+                <i class="fas fa-edit"></i> Edit
+              </a>
+              <a
+                href="{% url 'tweet_delete' tweet.id %}"
+                class="btn btn-outline-danger btn-sm"
+              >
+                <i class="fas fa-trash"></i> Delete
+              </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% else %}
+  <p class="text-center text-white mt-4">
+    No tweets or users found matching your search.
+  </p>
+  {% endif %}
+</div>
+
+<script>
+
+  function toggleReadMore(tweetId) {
+    document.getElementById(`tweet-preview-${tweetId}`).classList.add("d-none");
+    document.getElementById(`tweet-full-${tweetId}`).classList.remove("d-none");
+  }
+
+  function toggleReadLess(tweetId) {
+    document
+      .getElementById(`tweet-preview-${tweetId}`)
+      .classList.remove("d-none");
+    document.getElementById(`tweet-full-${tweetId}`).classList.add("d-none");
+  }
+</script>
+
+{% endblock %}

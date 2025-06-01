@@ -1,0 +1,42 @@
+{% extends "layout.html" %} {% block title %} Engineer Tweets {% endblock %}
+{%block content %}
+
+<div class="container mt-5">
+  <h2 class="text-center text-white mt-3">
+    {% if form.instance.pk %} Edit Tweet {% else %} Create Tweet {% endif %}
+  </h2>
+
+  <div class="d-flex justify-content-center">
+    <div
+      class="p-4 shadow-lg border rounded-3"
+      style="max-width: 500px; width: 100%; background: transparent"
+    >
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %} {% for field in form %}
+        <div class="mb-3">
+          <label class="form-label fw-bold text-white">{{ field.label }}</label>
+          {{ field }} {% if field.errors %}
+          <div class="text-danger small">
+            {% for error in field.errors %} {{ error }} {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+        {% endfor %}
+
+        <div class="d-grid">
+          <button class="btn btn-warning fw-bold" type="submit">
+            <i class="fas fa-paper-plane"></i> Submit
+          </button>
+        </div>
+      </form>
+
+      <div class="text-center mt-3">
+        <a href="{% url 'tweet_list' %}" class="btn btn-outline-light">
+          <i class="fas fa-arrow-left"></i> Back to Tweet List
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
